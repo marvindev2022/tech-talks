@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Do Prompt ao Engenheiro Autônomo</title>
+<link rel="stylesheet" href="vendor/github-dark.css">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --purple: #7c3aed;
+    --green: #10b981;
+    --orange: #f59e0b;
+    --red: #ef4444;
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { background: var(--bg); }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    color: var(--text);
+    background: var(--bg);
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  /* ── Viewport container ── */
+  #deck {
+    width: 100vw;
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+  }
+  #deck::-webkit-scrollbar { display: none; }
+
+  /* ── Slide ── */
+  .slide {
+    min-height: 100vh;
+    padding: 56px 72px 72px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .slide.center { align-items: center; text-align: center; }
+
+  /* ── Typography ── */
+  h1 { font-size: 2.6em; font-weight: 900; line-height: 1.05; }
+  h2 { font-size: 1.5em; font-weight: 700; color: var(--green); margin-bottom: 0.6em; }
+  h3 { font-size: 0.75em; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.12em; margin-bottom: 0.8em; }
+  p  { font-size: 0.85em; line-height: 1.6; }
+  ul { list-style: none; padding: 0; }
+  ul li { font-size: 0.82em; line-height: 1.7; }
+  ul li::before { content: "▸ "; color: var(--green); }
+
+  code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85em;
+    background: var(--surface);
+    padding: 0.1em 0.35em;
+    border-radius: 4px;
+    color: var(--green);
+  }
+  pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.1em 1.3em;
+    margin: 0.6em 0;
+    overflow-x: auto;
+  }
+  pre code {
+    font-size: 0.72em;
+    color: var(--text);
+    background: none;
+    padding: 0;
+  }
+
+  hl   { color: var(--green);  font-weight: 700; }
+  hl-p { color: #a78bfa;       font-weight: 700; }
+  hl-o { color: var(--orange); font-weight: 700; }
+
+  /* ── Layout helpers ── */
+  .mt { margin-top: 1em; }
+  .cols   { display: grid; gap: 1.4em; }
+  .cols-2 { grid-template-columns: 1fr 1fr; }
+  .cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1em 1.2em;
+  }
+  .card-green  { border-color: rgba(16,185,129,0.45); }
+  .card-purple { border-color: rgba(124,58,237,0.45); }
+  .card-orange { border-color: rgba(245,158,11,0.45); }
+
+  /* ── Tags ── */
+  .tag {
+    display: inline-block;
+    padding: 0.15em 0.55em;
+    border-radius: 20px;
+    font-size: 0.55em;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    vertical-align: middle;
+    margin: 0 0.2em;
+  }
+  .tag-dev    { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.35); }
+  .tag-lead   { background: rgba(124,58,237,0.15); color: #a78bfa;      border: 1px solid rgba(124,58,237,0.35); }
+  .tag-cto    { background: rgba(245,158,11,0.15); color: var(--orange); border: 1px solid rgba(245,158,11,0.35); }
+
+  /* ── Stack layers ── */
+  .stack-layer {
+    background: var(--surface);
+    border-left: 4px solid var(--green);
+    padding: 0.5em 1em;
+    margin: 0.28em 0;
+    border-radius: 0 8px 8px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.82em;
+  }
+  .stack-arrow { text-align: center; color: var(--muted); font-size: 0.7em; margin: 0.1em 0; }
+
+  /* ── Big stat ── */
+  .big-stat { font-size: 3.5em; font-weight: 900; color: var(--green); line-height: 1; display: block; }
+  .big-stat-label { font-size: 0.7em; color: var(--muted); }
+
+  /* ── Quote ── */
+  .quote {
+    border-left: 3px solid var(--green);
+    padding: 0.5em 1em;
+    font-style: italic;
+    color: var(--muted);
+    font-size: 0.82em;
+    margin: 0.8em 0;
+  }
+
+  /* ── Agent badges ── */
+  .agent { display: inline-block; padding: 0.18em 0.55em; border-radius: 4px; font-family: 'JetBrains Mono'; font-size: 0.7em; font-weight: 700; }
+  .agent-blue   { background: rgba(59,130,246,0.3);  color: #93c5fd; }
+  .agent-yellow { background: rgba(245,158,11,0.3);  color: #fcd34d; }
+  .agent-green  { background: rgba(16,185,129,0.3);  color: #6ee7b7; }
+  .agent-red    { background: rgba(239,68,68,0.3);   color: #fca5a5; }
+
+  /* ── Demo badge ── */
+  .demo-badge {
+    display: inline-block;
+    background: rgba(16,185,129,0.2);
+    border: 2px solid var(--green);
+    color: var(--green);
+    border-radius: 8px;
+    padding: 0.2em 0.7em;
+    font-size: 0.55em;
+    font-family: 'JetBrains Mono';
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    vertical-align: middle;
+  }
+
+  /* ── Aha moment ── */
+  .aha { font-size: 1.7em; font-weight: 900; line-height: 1.25; }
+  .aha span { color: var(--green); }
+
+  /* ── Act header ── */
+  .act-number { font-size: 0.65em; font-family: 'JetBrains Mono'; color: var(--purple); text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 0.3em; }
+  .act-title  { font-size: 2.2em; font-weight: 900; line-height: 1.05; }
+
+  /* ── Navigation bar ── */
+  #nav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    height: 44px;
+    background: rgba(13,17,23,0.92);
+    backdrop-filter: blur(8px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    z-index: 100;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    user-select: none;
+  }
+  #nav button {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 6px;
+    padding: 4px 12px;
+    cursor: pointer;
+    font-family: 'JetBrains Mono';
+    font-size: 11px;
+    transition: all 0.15s;
+  }
+  #nav button:hover { border-color: var(--green); color: var(--green); }
+  #nav .nav-center { display: flex; gap: 8px; align-items: center; }
+
+  /* ── Progress bar ── */
+  #progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--green);
+    transition: width 0.2s;
+    z-index: 101;
+  }
+
+  /* ── Speaker notes overlay ── */
+  #notes-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 200;
+    padding: 60px;
+    overflow-y: auto;
+  }
+  #notes-overlay.open { display: block; }
+  #notes-overlay h4 { color: var(--green); margin-bottom: 1em; font-family: 'JetBrains Mono'; }
+  #notes-overlay p  { color: var(--text); font-size: 1.1em; line-height: 1.8; }
+  #notes-close { position: absolute; top: 20px; right: 24px; background: none; border: none; color: var(--muted); font-size: 1.5em; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div id="progress"></div>
+
+<div id="deck">
+
+<!-- ══════════════════════════════════════
+     1. TÍTULO
+══════════════════════════════════════ -->
+<section class="slide center" data-notes="Deixe o slide respirar 5 segundos em silêncio. Olhe para a plateia. Comece devagar.">
+  <div>
+    <p style="font-size:0.6em; font-family:'JetBrains Mono'; color:var(--green); text-transform:uppercase; letter-spacing:0.15em; margin-bottom:0.6em">Clarke Energy · Tech Talk</p>
+    <h1>Do Prompt ao<br><hl>Engenheiro Autônomo</hl></h1>
+    <p style="margin-top:0.8em; color:var(--muted)">Como usar IA de verdade no dia a dia de engenharia</p>
+    <p style="margin-top:2em; font-size:0.55em; color:var(--muted); font-family:'JetBrains Mono'">Marcus Rodrigues · 2026</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     2. PERGUNTA DE ABERTURA
+══════════════════════════════════════ -->
+<section class="slide center" data-notes="Faça a pergunta e espere. Deixe o silêncio incomodar. Alguns vão levantar a mão. Outros vão rir com vergonha. Perfeito.">
+  <h3>antes de começar</h3>
+  <div class="aha">Quantas vezes você já<br>perguntou no Slack algo<br>que <span>você mesmo respondeu</span><br>3 meses atrás?</div>
+  <p class="mt" style="color:var(--muted)">👆 Levanta a mão quem nunca fez isso.</p>
+</section>
+
+<!-- ══════════════════════════════════════
+     3. O PROBLEMA REAL
+══════════════════════════════════════ -->
+<section class="slide" data-notes="Não é um problema de memória individual. É um problema de contexto perecível.">
+  <h2>O problema não é a IA</h2>
+  <div class="cols cols-2 mt">
+    <div class="card">
+      <p style="color:var(--muted); font-size:0.7em; margin-bottom:0.6em">O que acontece hoje</p>
+      <ul>
+        <li>Contexto vive na cabeça das pessoas</li>
+        <li>Decisões sem registro do "por quê"</li>
+        <li>Onboarding leva semanas</li>
+        <li>O mesmo bug em serviços diferentes</li>
+        <li>Reuniões para lembrar o que já foi decidido</li>
+      </ul>
+    </div>
+    <div class="card card-green">
+      <p style="color:var(--green); font-size:0.7em; margin-bottom:0.6em">O que vamos resolver hoje</p>
+      <ul>
+        <li>IA com memória semântica permanente</li>
+        <li>Skills que codificam o conhecimento do time</li>
+        <li>Automações invisíveis via hooks</li>
+        <li>Frota de agentes paralelos</li>
+        <li>Código como grafo navegável</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     4. REGRAS DO JOGO
+══════════════════════════════════════ -->
+<section class="slide" data-notes="Isso é CRÍTICO para a credibilidade. Especialmente com o CTO na sala.">
+  <h2>Regras do jogo</h2>
+  <div class="cols cols-3 mt">
+    <div class="card card-green">
+      <p style="font-size:1.4em; margin-bottom:0.4em">🔒</p>
+      <p style="font-weight:700; color:var(--green); margin-bottom:0.3em">100% local</p>
+      <p style="color:var(--muted)">Embeddings na sua máquina. Nenhum dado do código sai para API alguma.</p>
+    </div>
+    <div class="card card-purple">
+      <p style="font-size:1.4em; margin-bottom:0.4em">⚡</p>
+      <p style="font-weight:700; color:#a78bfa; margin-bottom:0.3em">Em produção hoje</p>
+      <p style="color:var(--muted)">Tudo que você vai ver está rodando no nosso time agora.</p>
+    </div>
+    <div class="card card-orange">
+      <p style="font-size:1.4em; margin-bottom:0.4em">🔁</p>
+      <p style="font-weight:700; color:var(--orange); margin-bottom:0.3em">Replicável</p>
+      <p style="color:var(--muted)">Você sai daqui com os scripts. Pode rodar no seu projeto amanhã.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     5. ROADMAP
+══════════════════════════════════════ -->
+<section class="slide" data-notes="Mostre o mapa antes de começar a jornada.">
+  <h2>A jornada hoje</h2>
+  <div class="mt">
+    <div class="stack-layer"><span>01 &nbsp;<hl>Memória semântica</hl></span><span class="tag tag-dev">dev</span></div>
+    <div class="stack-arrow">↓</div>
+    <div class="stack-layer"><span>02 &nbsp;<hl>Custom Skills</hl></span><span class="tag tag-dev">dev</span></div>
+    <div class="stack-arrow">↓</div>
+    <div class="stack-layer"><span>03 &nbsp;<hl>Hooks de automação</hl></span><span class="tag tag-dev">dev</span></div>
+    <div class="stack-arrow">↓</div>
+    <div class="stack-layer"><span>04 &nbsp;<hl>Agentes paralelos</hl></span><span class="tag tag-lead">tech lead</span></div>
+    <div class="stack-arrow">↓</div>
+    <div class="stack-layer"><span>05 &nbsp;<hl>Grafos de conhecimento</hl></span><span class="tag tag-cto">cto</span></div>
+    <div class="stack-arrow">↓</div>
+    <div class="stack-layer" style="border-color:var(--orange)"><span>06 &nbsp;<hl-o>Stack completa — demo ao vivo</hl-o></span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     6. ACT 1 — MEMÓRIA
+══════════════════════════════════════ -->
+<section class="slide center" data-notes="Pausa dramática antes de virar o slide.">
+  <div class="act-number">01 / 05</div>
+  <div class="act-title">Memória<br><hl>Semântica</hl></div>
+  <div class="quote" style="text-align:left; margin-top:1.5em">"A IA que esquece tudo toda sessão não é um colega. É um estagiário sem onboarding."</div>
+</section>
+
+<!-- ══════════════════════════════════════
+     7. COMO A MAIORIA USA HOJE
+══════════════════════════════════════ -->
+<section class="slide" data-notes="A maioria das pessoas usa a IA assim. É melhor que nada, mas ainda é keyword search.">
+  <h2>Como a maioria usa hoje</h2>
+  <div class="card mt" style="margin-bottom:1em">
+    <p style="font-size:0.65em; color:var(--muted); margin-bottom:0.5em">CLAUDE.md / README</p>
+    <pre><code># Meu Projeto
+- Usa React 18 + TypeScript
+- Backend em FastAPI
+- Deploy via Kubernetes
+- Não usar cache-first no Apollo
+...</code></pre>
+  </div>
+  <p style="color:var(--orange)">⚠ Isso é texto estático. A IA lê do início ao fim. Não busca. Não prioriza.</p>
+  <p class="mt" style="color:var(--muted)">Com 50 arquivos CLAUDE.md no monorepo, o contexto explode.</p>
+</section>
+
+<!-- ══════════════════════════════════════
+     8. RAG DE VERDADE
+══════════════════════════════════════ -->
+<section class="slide" data-notes="A analogia do colega com memória fotográfica é suficiente.">
+  <h2>RAG de verdade</h2>
+  <div class="cols cols-2 mt">
+    <div>
+      <p style="color:var(--muted); font-size:0.7em; margin-bottom:0.6em">Como funciona</p>
+      <div class="stack-layer">Você pergunta algo</div>
+      <div class="stack-arrow">↓</div>
+      <div class="stack-layer">Query vira vetor (embedding)</div>
+      <div class="stack-arrow">↓</div>
+      <div class="stack-layer">Busca por similaridade no banco</div>
+      <div class="stack-arrow">↓</div>
+      <div class="stack-layer">Top-K chunks relevantes</div>
+      <div class="stack-arrow">↓</div>
+      <div class="stack-layer" style="border-color:var(--green)">Resposta com contexto real</div>
+    </div>
+    <div>
+      <p style="color:var(--muted); font-size:0.7em; margin-bottom:0.6em">A stack (100% local)</p>
+      <div class="card card-green">
+        <ul>
+          <li><hl>PostgreSQL + pgvector</hl> — armazena e busca vetores</li>
+          <li><hl>Ollama</hl> — roda modelos localmente</li>
+          <li><hl>nomic-embed-text</hl> — 768 dims, zero API</li>
+          <li><hl>MCP server</hl> — expõe como tool para o Claude</li>
+        </ul>
+        <p style="color:var(--green); margin-top:0.8em; font-size:0.75em">✓ Zero tokens gastos na indexação<br>✓ Zero dados saindo da máquina</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     9. O QUE ESTÁ NO BANCO
+══════════════════════════════════════ -->
+<section class="slide" data-notes="Mostre os números reais. Isso impressiona.">
+  <h2>O que está no banco hoje</h2>
+  <div class="cols cols-2 mt">
+    <div>
+      <div class="card" style="margin-bottom:0.6em">
+        <p style="font-size:0.65em; color:var(--muted)">memory/*.md</p>
+        <p style="font-size:1em; font-weight:700; color:var(--green)">328 arquivos · 1.183 chunks</p>
+        <p style="font-size:0.65em; color:var(--muted)">Memórias de sessões — feedback, projetos, padrões</p>
+      </div>
+      <div class="card">
+        <p style="font-size:0.65em; color:var(--muted)">CLAUDE.md por serviço</p>
+        <p style="font-size:1em; font-weight:700; color:#a78bfa">6 serviços · 91 chunks</p>
+        <p style="font-size:0.65em; color:var(--muted)">Contexto de cada microserviço</p>
+      </div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:0.6em">
+        <p style="font-size:0.65em; color:var(--muted)">Sessões de trabalho (JSONL)</p>
+        <p style="font-size:1em; font-weight:700; color:var(--orange)">100+ sessões · 2.622 chunks</p>
+        <p style="font-size:0.65em; color:var(--muted)">Histórico real de decisões e implementações</p>
+      </div>
+      <div class="card">
+        <p style="font-size:0.65em; color:var(--muted)">arch/ — ADRs</p>
+        <p style="font-size:1em; font-weight:700; color:var(--red)">4 docs · 28 chunks</p>
+        <p style="font-size:0.65em; color:var(--muted)">Decisões arquiteturais e bottlenecks conhecidos</p>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:1em; text-align:center">
+    <span class="big-stat">3.924</span>
+    <span class="big-stat-label">chunks indexados · 100% local · 0 tokens gastos</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     10. DEMO RAG
+══════════════════════════════════════ -->
+<section class="slide" data-notes="DEMO AO VIVO. Pergunte: 'por que não podemos usar cache-first no Apollo?' e 'qual o bottleneck do calculator-new?'">
+  <h2>Demo <span class="demo-badge">▶ AO VIVO</span></h2>
+  <p class="mt" style="color:var(--muted)">Queries para demonstrar no terminal:</p>
+  <div class="card mt"><pre><code>rag_query("por que não podemos usar cache-first no Apollo?")</code></pre></div>
+  <div class="card mt"><pre><code>rag_query("qual o bottleneck de performance do calculator-new?")</code></pre></div>
+  <div class="card mt"><pre><code>rag_query("como fazer kubectl exec em beta com segurança?")</code></pre></div>
+  <p class="mt" style="color:var(--muted)">Observe: score de similaridade · source_type · path do arquivo original</p>
+</section>
+
+<!-- ══════════════════════════════════════
+     11. AHA 1
+══════════════════════════════════════ -->
+<section class="slide center" data-notes="Pausa. Deixe a frase pousar.">
+  <div class="aha">"A IA agora lembra<br>do que <span>você esqueceu</span>."</div>
+  <p class="mt" style="color:var(--muted)">Decisões de 6 meses atrás · bugs resolvidos · padrões do time</p>
+</section>
+
+<!-- ══════════════════════════════════════
+     12. ACT 2 — SKILLS
+══════════════════════════════════════ -->
+<section class="slide center" data-notes="Transição de ato. Energia diferente.">
+  <div class="act-number">02 / 05</div>
+  <div class="act-title">Custom<br><hl>Skills</hl></div>
+  <div class="quote" style="text-align:left; margin-top:1.5em">"Você não deveria repetir o mesmo fluxo de 10 passos toda semana. Ensine uma vez. Use para sempre."</div>
+</section>
+
+<!-- ══════════════════════════════════════
+     13. O QUE É UM SKILL
+══════════════════════════════════════ -->
+<section class="slide" data-notes="Para o dev: slash command com superpoderes. Para o CTO: macro que codifica o conhecimento do time.">
+  <h2>O que é um Skill</h2>
+  <div class="cols cols-2 mt">
+    <div>
+      <p style="color:var(--muted); font-size:0.75em; margin-bottom:0.5em">Você digita</p>
+      <div class="card card-green" style="margin-bottom:1em"><code style="font-size:1.1em">/deploy-beta</code></div>
+      <p style="color:var(--muted); font-size:0.75em; margin-bottom:0.5em">A IA executa</p>
+      <ul>
+        <li>Valida branch e contexto</li>
+        <li>Roda testes automaticamente</li>
+        <li>Commit com formato correto</li>
+        <li>Push com proteções</li>
+        <li>Publica schema no Apollo Rover</li>
+        <li>Monitora logs do pod em beta</li>
+      </ul>
+    </div>
+    <div>
+      <p style="color:var(--muted); font-size:0.75em; margin-bottom:0.5em">Estrutura</p>
+      <pre><code>~/.claude/skills/
+  deploy-beta/
+    SKILL.md     ← instrução markdown
+  task/
+    SKILL.md
+  sentry-fix/
+    SKILL.md
+  beta-local/
+    SKILL.md</code></pre>
+      <p class="mt" style="color:var(--muted)">Um arquivo markdown por skill. A IA lê e executa.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     14. SKILLS EM PRODUÇÃO
+══════════════════════════════════════ -->
+<section class="slide" data-notes="Liste os skills reais. O impacto fica visível quando você conta quantas horas cada um economiza por sprint.">
+  <h2>Skills em produção hoje</h2>
+  <div class="cols cols-2 mt">
+    <div class="card card-green" style="margin-bottom:0.6em">
+      <p style="font-weight:700"><code>/task</code></p>
+      <p style="color:var(--muted)">Cria task no Asana + branch Git + atribui + muda status. 30 segundos vs 5 minutos manuais.</p>
+    </div>
+    <div class="card" style="margin-bottom:0.6em">
+      <p style="font-weight:700"><code>/deploy-beta</code></p>
+      <p style="color:var(--muted)">Deploy completo com validações, rover publish e monitoramento de logs.</p>
+    </div>
+    <div class="card" style="margin-bottom:0.6em">
+      <p style="font-weight:700"><code>/sentry-fix</code></p>
+      <p style="color:var(--muted)">Lê o erro no Sentry, localiza o código, propõe e aplica o fix.</p>
+    </div>
+    <div class="card card-purple" style="margin-bottom:0.6em">
+      <p style="font-weight:700"><code>/checklist</code></p>
+      <p style="color:var(--muted)">Valida se a implementação segue os padrões de engenharia operacional antes de cada PR.</p>
+    </div>
+    <div class="card" style="margin-bottom:0.6em">
+      <p style="font-weight:700"><code>/beta-local</code></p>
+      <p style="color:var(--muted)">Sobe ambiente local conectado ao banco beta. Stack completa em um comando.</p>
+    </div>
+    <div class="card card-orange">
+      <p style="font-weight:700"><code>/graphify</code></p>
+      <p style="color:var(--muted)">Transforma qualquer input em grafo de conhecimento. (ato 5)</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     15. DEMO SKILL
+══════════════════════════════════════ -->
+<section class="slide" data-notes="DEMO AO VIVO: /task — mostre o Asana abrindo com a task criada, branch no terminal, status mudado.">
+  <h2>Demo <span class="demo-badge">▶ AO VIVO</span></h2>
+  <p class="mt" style="color:var(--muted)">No terminal do Claude Code:</p>
+  <div class="card card-green mt"><pre><code>/task "implementar endpoint de resumo de faturas"</code></pre></div>
+  <p class="mt" style="color:var(--muted)">Observe em tempo real:</p>
+  <ul class="mt">
+    <li>Task criada no Asana com estimativa</li>
+    <li>Branch criada com nomenclatura correta</li>
+    <li>Status movido para In Progress automaticamente</li>
+    <li>Contexto da task injetado na sessão</li>
+  </ul>
+</section>
+
+<!-- ══════════════════════════════════════
+     16. ACT 3 — HOOKS
+══════════════════════════════════════ -->
+<section class="slide center" data-notes="Hooks são o menos sexy mas o mais poderoso para consistência.">
+  <div class="act-number">03 / 05</div>
+  <div class="act-title">Hooks de<br><hl>Automação</hl></div>
+  <div class="quote" style="text-align:left; margin-top:1.5em">"O padrão que depende de lembrar não é um padrão. É uma esperança."</div>
+</section>
+
+<!-- ══════════════════════════════════════
+     17. HOOKS
+══════════════════════════════════════ -->
+<section class="slide" data-notes="Para o CTO: enforcement automático de políticas de engenharia.">
+  <h2>O que são Hooks</h2>
+  <div class="cols cols-2 mt">
+    <div>
+      <p style="color:var(--muted); font-size:0.75em; margin-bottom:0.6em">Eventos disponíveis</p>
+      <div class="card" style="margin-bottom:0.4em"><p><code>PreToolUse</code> — antes de qualquer tool</p></div>
+      <div class="card" style="margin-bottom:0.4em"><p><code>PostToolUse</code> — após cada tool</p></div>
+      <div class="card" style="margin-bottom:0.4em"><p><code>UserPromptSubmit</code> — ao enviar prompt</p></div>
+      <div class="card"><p><code>Stop</code> — ao finalizar resposta</p></div>
+    </div>
+    <div>
+      <p style="color:var(--muted); font-size:0.75em; margin-bottom:0.6em">O que você pode fazer</p>
+      <ul>
+        <li>Injetar contexto automático no prompt</li>
+        <li>Validar antes de commitar</li>
+        <li>Bloquear comandos perigosos</li>
+        <li>Logar todas as ações da IA</li>
+        <li>Notificar time após cada deploy</li>
+        <li>Otimizar tokens antes de cada chamada</li>
+      </ul>
+    </div>
+  </div>
+  <div class="cols cols-2 mt">
+    <div class="card card-green">
+      <p style="color:var(--green); font-weight:700">✓ RTK (Rust Token Killer)</p>
+      <p style="color:var(--muted)">Hook que otimiza todos os comandos shell — 60–90% de economia de tokens em tool results.</p>
+    </div>
+    <div class="card card-purple">
+      <p style="color:#a78bfa; font-weight:700">✓ Guardrails automáticos</p>
+      <p style="color:var(--muted)">Hook que bloqueia git push direto para main e kubectl em produção.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     18. ACT 4 — AGENTES
+══════════════════════════════════════ -->
+<section class="slide center" data-notes="Esse é o ato que impressiona o CTO. Um engenheiro com frota de agentes não é mais 1x. É 10x.">
+  <div class="act-number">04 / 05</div>
+  <div class="act-title">Agentes<br><hl>Paralelos</hl></div>
+  <div class="quote" style="text-align:left; margin-top:1.5em">"Você não é mais um engenheiro. Você é um engenheiro que comanda uma equipe."</div>
+</section>
+
+<!-- ══════════════════════════════════════
+     19. ORQUESTRADOR + ESPECIALISTAS
+══════════════════════════════════════ -->
+<section class="slide" data-notes="Analogia do tech lead com o time: o orquestrador delega, não executa tudo.">
+  <h2>Orquestrador + Especialistas</h2>
+  <div class="mt" style="text-align:center">
+    <div class="card" style="display:inline-block; padding:0.6em 2em; margin-bottom:0.6em">
+      <span class="agent agent-green">orquestrador</span>
+      <p style="color:var(--muted); margin-top:0.4em">Define o plano · Sintetiza resultados · Decide próximo passo</p>
+    </div>
+    <div class="stack-arrow">distribui trabalho em paralelo ↓</div>
+    <div class="cols cols-3 mt">
+      <div class="card" style="text-align:center">
+        <span class="agent agent-blue">security-auditor</span>
+        <p style="color:var(--muted); margin-top:0.4em">Verifica vulnerabilidades</p>
+      </div>
+      <div class="card" style="text-align:center">
+        <span class="agent agent-yellow">performance-analyst</span>
+        <p style="color:var(--muted); margin-top:0.4em">Identifica bottlenecks</p>
+      </div>
+      <div class="card" style="text-align:center">
+        <span class="agent agent-red">coverage-reviewer</span>
+        <p style="color:var(--muted); margin-top:0.4em">Analisa cobertura</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     20. WORKFLOW EM CÓDIGO
+══════════════════════════════════════ -->
+<section class="slide" data-notes="Mostre o código real. Devs vão querer copiar isso.">
+  <h2>Workflow em código</h2>
+  <pre class="mt"><code class="language-javascript">const DIMENSOES = [
+  { label: 'security',  prompt: 'Audite vulnerabilidades...' },
+  { label: 'perf',      prompt: 'Identifique bottlenecks...' },
+  { label: 'coverage',  prompt: 'Analise gaps de cobertura...' },
+]
+
+// 3 agentes rodando ao mesmo tempo
+const resultados = await parallel(
+  DIMENSOES.map(d => () =>
+    agent(d.prompt, { label: d.label, schema: FINDINGS_SCHEMA })
+  )
+)
+
+// cada finding verificado por um adversarial checker
+const verificados = await parallel(
+  resultados.flat().map(f => () =>
+    agent(`Tente refutar: ${f.title}`, { schema: VERDICT_SCHEMA })
+  )
+)</code></pre>
+</section>
+
+<!-- ══════════════════════════════════════
+     21. DEMO AGENTES
+══════════════════════════════════════ -->
+<section class="slide" data-notes="DEMO AO VIVO. Comando para a plateia acompanhar: cd ~/clarke/projects/sales && claude -p 'execute ~/talks/ia-na-pratica/demos/04-workflow-auditoria.js'. A imagem dos agentes coloridos vai aparecer no terminal. É o momento mais impressionante do talk.">
+  <h2>Demo <span class="demo-badge">▶ AO VIVO</span></h2>
+  <pre style="font-size:0.62em; margin-top:0.5em; margin-bottom:0.1em"><code class="language-bash">cd ~/clarke/projects/sales
+claude -p "execute ~/talks/ia-na-pratica/demos/04-workflow-auditoria.js"</code></pre>
+  <p style="color:var(--muted); font-size:0.8em; margin-top:0.3em; margin-bottom:0.3em">O que aparece no terminal durante o workflow:</p>
+  <div class="cols cols-2 mt">
+    <div>
+      <div class="card" style="margin-bottom:0.5em">
+        <span class="agent agent-blue">kubernetes-especialista</span>
+        <p style="color:var(--muted); margin-top:0.3em; font-size:0.72em">Done (13 tool uses · 43.5k tokens · 5m)</p>
+      </div>
+      <div class="card" style="margin-bottom:0.5em">
+        <span class="agent agent-yellow">prometheus-especialista</span>
+        <p style="color:var(--muted); margin-top:0.3em; font-size:0.72em">Done (21 tool uses · 95.7k tokens · 5m)</p>
+      </div>
+      <div class="card">
+        <span class="agent agent-green">orquestrador</span>
+        <p style="color:var(--muted); margin-top:0.3em; font-size:0.72em">Done (4 tool uses · 71.8k tokens · 4m)</p>
+      </div>
+    </div>
+    <div class="card card-green" style="display:flex; flex-direction:column; justify-content:center">
+      <p style="color:var(--green); font-weight:700; margin-bottom:0.6em">O que acabou de acontecer</p>
+      <ul>
+        <li>3 agentes rodaram em paralelo</li>
+        <li>Cada um com ferramentas independentes</li>
+        <li>Orquestrador sintetizou tudo</li>
+        <li>Tempo total: 5 min (não 15)</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     22. ACT 5 — GRAPHIFY
+══════════════════════════════════════ -->
+<section class="slide center" data-notes="Esse ato é para o tech lead e CTO.">
+  <div class="act-number">05 / 05</div>
+  <div class="act-title">Grafos de<br><hl>Conhecimento</hl></div>
+  <div class="quote" style="text-align:left; margin-top:1.5em">"Um monorepo de 50 serviços não é documentação. É contexto demais para qualquer IA processar de uma vez."</div>
+</section>
+
+<!-- ══════════════════════════════════════
+     23. GRAPHIFY
+══════════════════════════════════════ -->
+<section class="slide" data-notes="O problema é real e todo mundo na sala sente.">
+  <h2>O que é o Graphify</h2>
+  <div class="cols cols-2 mt">
+    <div>
+      <p style="color:var(--muted); font-size:0.75em; margin-bottom:0.6em">Qualquer input</p>
+      <ul>
+        <li>Código fonte</li>
+        <li>Documentação</li>
+        <li>Sessões anteriores</li>
+        <li>PDFs e imagens</li>
+      </ul>
+      <div style="font-size:1.4em; text-align:center; margin:0.8em 0; color:var(--green)">↓ /graphify</div>
+      <p style="color:var(--muted)">Grafo de conhecimento navegável</p>
+    </div>
+    <div>
+      <div class="card card-green" style="margin-bottom:0.6em">
+        <p style="color:var(--green); font-weight:700; margin-bottom:0.4em">O que você ganha</p>
+        <ul>
+          <li>Nós = entidades (serviços, funções)</li>
+          <li>Arestas = relacionamentos (chama, depende)</li>
+          <li>Queries em linguagem natural</li>
+          <li>Navegação por impacto, não por arquivo</li>
+        </ul>
+      </div>
+      <div class="card card-orange">
+        <p style="color:var(--orange); margin-bottom:0.4em">⚡ Exemplo real</p>
+        <p style="color:var(--muted)">"Quais serviços são afetados se eu mudar o schema do calculator-new?"</p>
+        <p style="color:var(--green); margin-top:0.4em; font-size:0.8em">Resposta em segundos. Sem abrir 12 repos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     24. DEMO GRAPHIFY
+══════════════════════════════════════ -->
+<section class="slide" data-notes="DEMO AO VIVO: /graphify no monorepo. 'Qual o caminho crítico para geração de proposta?' vai impressionar todo mundo.">
+  <h2>Demo <span class="demo-badge">▶ AO VIVO</span></h2>
+  <div class="card mt"><pre><code>/graphify  # indexa o monorepo como grafo</code></pre></div>
+  <p class="mt" style="color:var(--muted)">Perguntas para demonstrar:</p>
+  <div class="card mt"><p>"Qual o caminho completo de uma simulação, do front até o banco?"</p></div>
+  <div class="card mt"><p>"Quais serviços dependem do clarke-calculator-new?"</p></div>
+  <div class="card mt"><p>"Onde está o maior risco de quebra se eu mexer na autenticação?"</p></div>
+</section>
+
+<!-- ══════════════════════════════════════
+     25. ACT 6 — STACK COMPLETA
+══════════════════════════════════════ -->
+<section class="slide center" data-notes="Esse é o clímax.">
+  <div class="act-number">06 / 06</div>
+  <div class="act-title">A Stack<br><hl>Completa</hl></div>
+  <p style="color:var(--muted); margin-top:1em">Tudo funcionando junto — ao vivo.</p>
+</section>
+
+<!-- ══════════════════════════════════════
+     26. DIAGRAMA COMPLETO
+══════════════════════════════════════ -->
+<section class="slide" data-notes="Mostre o diagrama. Deixe a arquitetura completa pousar antes do demo.">
+  <h2>A stack completa</h2>
+  <div class="mt">
+    <div class="stack-layer"><span><hl>RAG</hl> &nbsp; busca contexto semântico relevante</span><span style="color:var(--muted); font-size:0.7em">pgvector + Ollama</span></div>
+    <div class="stack-arrow">+</div>
+    <div class="stack-layer"><span><hl>Skill</hl> &nbsp; executa o fluxo correto para o domínio</span><span style="color:var(--muted); font-size:0.7em">SKILL.md</span></div>
+    <div class="stack-arrow">+</div>
+    <div class="stack-layer"><span><hl>Hook</hl> &nbsp; injeta guardrails e contexto automático</span><span style="color:var(--muted); font-size:0.7em">settings.json</span></div>
+    <div class="stack-arrow">+</div>
+    <div class="stack-layer"><span><hl>Agentes</hl> &nbsp; executam em paralelo cada dimensão</span><span style="color:var(--muted); font-size:0.7em">Workflow</span></div>
+    <div class="stack-arrow">+</div>
+    <div class="stack-layer" style="border-color:var(--orange)"><span><hl-o>Graphify</hl-o> &nbsp; navega o conhecimento por relacionamento</span><span style="color:var(--muted); font-size:0.7em">grafo</span></div>
+    <div class="stack-arrow">=</div>
+    <div class="stack-layer" style="border-color:var(--purple); background:rgba(124,58,237,0.08)"><span style="color:#a78bfa; font-weight:700; font-size:1.05em">Engenheiro com superpoderes</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     27. DEMO FINAL
+══════════════════════════════════════ -->
+<section class="slide" data-notes="DEMO FINAL. Escolha uma tarefa real do backlog. São 20 minutos de trabalho humano em 2 minutos.">
+  <h2>Demo Final <span class="demo-badge">▶ AO VIVO</span></h2>
+  <p class="mt" style="color:var(--muted)">Tarefa real do backlog:</p>
+  <div class="card card-green mt">
+    <p style="font-size:1.05em">"Implementar endpoint de resumo mensal de faturas para o portal do cliente"</p>
+  </div>
+  <p class="mt" style="color:var(--muted)">A IA vai:</p>
+  <ul class="mt">
+    <li>Buscar no RAG contexto sobre faturas e o portal</li>
+    <li>Consultar o grafo para mapear dependências</li>
+    <li>Criar task no Asana + branch + estimativa</li>
+    <li>Propor arquitetura com base no padrão do time</li>
+    <li>Gerar checklist operacional antes de qualquer código</li>
+  </ul>
+</section>
+
+<!-- ══════════════════════════════════════
+     28. O QUE MUDOU
+══════════════════════════════════════ -->
+<section class="slide" data-notes="Esse slide é a virada. Não é sobre a ferramenta. É sobre a mudança de papel.">
+  <h2>O que de fato mudou</h2>
+  <div class="cols cols-2 mt">
+    <div class="card">
+      <p style="color:var(--muted); font-size:0.75em; margin-bottom:0.6em">Engenheiro antes</p>
+      <ul>
+        <li>Pesquisa contexto</li>
+        <li>Lembra padrões</li>
+        <li>Executa tarefas repetitivas</li>
+        <li>Revisa código linha por linha</li>
+        <li>Escreve documentação</li>
+      </ul>
+    </div>
+    <div class="card card-green">
+      <p style="color:var(--green); font-size:0.75em; margin-bottom:0.6em">Engenheiro agora</p>
+      <ul>
+        <li><hl>Define</hl> o que precisa ser feito</li>
+        <li><hl>Valida</hl> o que a IA propõe</li>
+        <li><hl>Decide</hl> o que vai para produção</li>
+        <li><hl>Ensina</hl> o sistema a agir como o time</li>
+        <li><hl>Orquestra</hl> agentes para escalar</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     29. COMO COMEÇAR
+══════════════════════════════════════ -->
+<section class="slide" data-notes="Termine com ação concreta. Dê o passo 1 claro o suficiente para executar amanhã de manhã.">
+  <h2>Como começar — amanhã</h2>
+  <div class="cols cols-3 mt">
+    <div class="card card-green">
+      <p style="color:var(--green); font-weight:700; margin-bottom:0.4em">Semana 1</p>
+      <p style="font-weight:700; margin-bottom:0.3em">Instalar + CLAUDE.md</p>
+      <p style="color:var(--muted)">Claude Code instalado. CLAUDE.md com contexto real do seu serviço.</p>
+    </div>
+    <div class="card card-purple">
+      <p style="color:#a78bfa; font-weight:700; margin-bottom:0.4em">Semana 2</p>
+      <p style="font-weight:700; margin-bottom:0.3em">Primeiro Skill</p>
+      <p style="color:var(--muted)">Identifique o fluxo mais repetitivo do seu dia. Codifique como Skill.</p>
+    </div>
+    <div class="card card-orange">
+      <p style="color:var(--orange); font-weight:700; margin-bottom:0.4em">Mês 1</p>
+      <p style="font-weight:700; margin-bottom:0.3em">RAG + Agentes</p>
+      <p style="color:var(--muted)">PostgreSQL + pgvector local. Primeiro workflow multi-agente.</p>
+    </div>
+  </div>
+  <div class="card mt" style="background:rgba(16,185,129,0.05); border-color:rgba(16,185,129,0.2)">
+    <p style="color:var(--muted)">O atalho pra tudo isso existe. Próximo slide →</p>
+    <code style="font-size:0.9em">github.com/clarke-energia/claude-toolkit</code>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     30. CLARKE CLAUDE TOOLKIT
+══════════════════════════════════════ -->
+<section class="slide" data-notes="O presente pra plateia. Deixa 'você não precisa construir do zero' pousar antes de revelar os números.">
+  <h2>Você não precisa construir do zero</h2>
+  <p style="color:var(--muted); margin-top:0.3em">Tudo que você viu hoje está empacotado em um repositório interno da Clarke.</p>
+  <div class="cols cols-3 mt">
+    <div class="card card-green" style="text-align:center">
+      <span class="big-stat">45</span>
+      <span class="big-stat-label">skills prontos</span>
+    </div>
+    <div class="card card-purple" style="text-align:center">
+      <span class="big-stat" style="color:#a78bfa">13</span>
+      <span class="big-stat-label">agentes especialistas</span>
+    </div>
+    <div class="card card-orange" style="text-align:center">
+      <span class="big-stat" style="color:var(--orange)">3</span>
+      <span class="big-stat-label">CLAUDE.md templates</span>
+    </div>
+  </div>
+  <div class="cols cols-2 mt">
+    <div class="card">
+      <p><span style="color:var(--green); font-weight:700">MCP RAG local</span> — PostgreSQL + pgvector + Ollama. Clona, sobe Docker, pronto.</p>
+    </div>
+    <div class="card">
+      <p><span style="color:var(--green); font-weight:700">Hooks de guardrail</span> + <span style="color:var(--orange); font-weight:700">11 prompts</span> por área — comercial, CS, energia, marketing, operações.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     31. INSTALL.SH
+══════════════════════════════════════ -->
+<section class="slide" data-notes="Execute ao vivo se der tempo. Senão mostra o output estático. A reação ao ver 45 skills aparecerem é o melhor encerramento possível.">
+  <h2>Um comando. Tudo instalado.</h2>
+  <div class="card card-green mt">
+    <pre><code>git clone github.com/clarke-energia/claude-toolkit
+cd claude-toolkit && bash install.sh</code></pre>
+  </div>
+  <div class="card mt">
+    <pre><code>[toolkit] skill: task/        [toolkit] skill: deploy-beta/
+[toolkit] skill: sentry-fix/  [toolkit] skill: code-review/
+... (41 skills a mais)
+[toolkit] agent: code-reviewer   [toolkit] agent: security-reviewer
+... (11 agentes a mais)
+[toolkit] Instalação concluída! Reinicie o Claude Code.</code></pre>
+  </div>
+  <div class="cols cols-2 mt">
+    <div class="card card-green">
+      <p><span style="color:var(--green); font-weight:700">✓ Contribuição aberta</span> — construiu algo que economizou tempo? PR aberto. O time inteiro ganha.</p>
+    </div>
+    <div class="card card-purple">
+      <p><span style="color:#a78bfa; font-weight:700">✓ Evolução coletiva</span> — um dev cria, o time inteiro usa na semana seguinte.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     32. FECHAMENTO
+══════════════════════════════════════ -->
+<section class="slide center" data-notes="Última frase. Pausa longa depois. Não atropele.">
+  <div class="aha" style="font-size:1.6em">"A IA não substituiu<br>o engenheiro.<br><br><span>Ela o multiplicou.</span>"</div>
+  <p style="margin-top:2.5em; color:var(--muted); font-family:'JetBrains Mono'; font-size:0.65em">Marcus Rodrigues · marcus.rodrigues@clarke.com.br</p>
+</section>
+
+<!-- ══════════════════════════════════════
+     31. Q&A
+══════════════════════════════════════ -->
+<section class="slide center" data-notes="Perguntas frequentes: segurança → local. custo → $20/mês. controle → você valida, ela propõe.">
+  <h2 style="color:var(--text)">Perguntas?</h2>
+  <div class="cols cols-3 mt">
+    <div class="card">
+      <p style="font-size:1.3em">🔒</p>
+      <p style="font-weight:700; color:var(--green); margin:0.3em 0">Segurança</p>
+      <p style="color:var(--muted)">Embeddings e banco 100% locais. Só geração de código usa API.</p>
+    </div>
+    <div class="card">
+      <p style="font-size:1.3em">💰</p>
+      <p style="font-weight:700; color:var(--orange); margin:0.3em 0">Custo</p>
+      <p style="color:var(--muted)">Claude Code ~$20/mês. RAG, Ollama, banco local: zero.</p>
+    </div>
+    <div class="card">
+      <p style="font-size:1.3em">✅</p>
+      <p style="font-weight:700; color:#a78bfa; margin:0.3em 0">Controle</p>
+      <p style="color:var(--muted)">A IA propõe. Você valida. Nunca commita sem sua aprovação.</p>
+    </div>
+  </div>
+</section>
+
+<!-- espaço final para não ficar colado na nav bar -->
+<div style="height:44px"></div>
+
+</div><!-- #deck -->
+
+<!-- ══════════════════════════════════════
+     SPEAKER NOTES OVERLAY
+══════════════════════════════════════ -->
+<div id="notes-overlay">
+  <button id="notes-close">✕</button>
+  <h4>Notas do apresentador</h4>
+  <p id="notes-text"></p>
+</div>
+
+<!-- ══════════════════════════════════════
+     NAVIGATION BAR
+══════════════════════════════════════ -->
+<div id="nav">
+  <button onclick="prevSlide()">← Anterior</button>
+  <div class="nav-center">
+    <span id="slide-counter">1 / 31</span>
+    <span style="color:var(--border)">|</span>
+    <span style="color:var(--muted)">← → navegar &nbsp; S notas &nbsp; F fullscreen &nbsp; B tela preta</span>
+  </div>
+  <button onclick="nextSlide()">Próximo →</button>
+</div>
+
+<script>
+const slides = Array.from(document.querySelectorAll('.slide'));
+const deck   = document.getElementById('deck');
+const counter = document.getElementById('slide-counter');
+const progress = document.getElementById('progress');
+const notesOverlay = document.getElementById('notes-overlay');
+const notesText    = document.getElementById('notes-text');
+let current = 0;
+let blackout = false;
+
+function goTo(idx) {
+  idx = Math.max(0, Math.min(slides.length - 1, idx));
+  current = idx;
+  slides[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  counter.textContent = `${idx + 1} / ${slides.length}`;
+  progress.style.width = `${((idx + 1) / slides.length) * 100}%`;
+}
+
+function nextSlide() { goTo(current + 1); }
+function prevSlide() { goTo(current - 1); }
+
+// Detect which slide is most visible
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.intersectionRatio > 0.5) {
+      const idx = slides.indexOf(e.target);
+      if (idx !== -1) {
+        current = idx;
+        counter.textContent = `${idx + 1} / ${slides.length}`;
+        progress.style.width = `${((idx + 1) / slides.length) * 100}%`;
+      }
+    }
+  });
+}, { threshold: 0.5 });
+slides.forEach(s => observer.observe(s));
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (notesOverlay.classList.contains('open')) {
+    if (e.key === 'Escape' || e.key === 's' || e.key === 'S') {
+      notesOverlay.classList.remove('open');
+    }
+    return;
+  }
+  switch(e.key) {
+    case 'ArrowRight': case 'ArrowDown': case ' ': e.preventDefault(); nextSlide(); break;
+    case 'ArrowLeft':  case 'ArrowUp':              e.preventDefault(); prevSlide(); break;
+    case 'f': case 'F':
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+      break;
+    case 'b': case 'B': case '.':
+      blackout = !blackout;
+      document.body.style.background = blackout ? '#000' : '';
+      deck.style.opacity = blackout ? '0' : '1';
+      break;
+    case 's': case 'S':
+      const note = slides[current]?.dataset?.notes || 'Sem notas para este slide.';
+      notesText.textContent = note;
+      notesOverlay.classList.add('open');
+      break;
+    case 'Escape':
+      deck.style.opacity = '1';
+      blackout = false;
+      break;
+  }
+});
+
+document.getElementById('notes-close').onclick = () => notesOverlay.classList.remove('open');
+
+// Init
+goTo(0);
+</script>
+</body>
+</html>
