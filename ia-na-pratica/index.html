@@ -297,7 +297,34 @@
 </section>
 
 <!-- ══════════════════════════════════════
-     4. REGRAS DO JOGO
+     4. SOFTWARE 3.0
+══════════════════════════════════════ -->
+<section class="slide" data-notes="Karpathy chamou de Software 3.0. Não precisa aprofundar — só plantar o frame antes de mostrar a stack.">
+  <h2>Software 3.0</h2>
+  <div class="cols cols-3 mt">
+    <div class="card">
+      <p style="font-size:0.55em; font-family:'JetBrains Mono'; color:var(--muted); letter-spacing:0.1em; margin-bottom:0.4em">1.0</p>
+      <p style="font-weight:700; margin-bottom:0.3em">Código explícito</p>
+      <p style="color:var(--muted)">Você escreve cada regra. O computador executa exatamente o que foi programado.</p>
+    </div>
+    <div class="card">
+      <p style="font-size:0.55em; font-family:'JetBrains Mono'; color:var(--muted); letter-spacing:0.1em; margin-bottom:0.4em">2.0</p>
+      <p style="font-weight:700; margin-bottom:0.3em">Pesos neurais</p>
+      <p style="color:var(--muted)">Você fornece dados. A rede aprende as regras sozinha. O comportamento emerge do treinamento.</p>
+    </div>
+    <div class="card card-green">
+      <p style="font-size:0.55em; font-family:'JetBrains Mono'; color:var(--green); letter-spacing:0.1em; margin-bottom:0.4em">3.0 — agora</p>
+      <p style="font-weight:700; color:var(--green); margin-bottom:0.3em">Linguagem natural</p>
+      <p style="color:var(--muted)">O LLM <hl>é o computador</hl>. Você programa com português. Um prompt é código.</p>
+    </div>
+  </div>
+  <div class="card card-orange" style="margin-top:1em">
+    <p style="font-size:0.65em; color:var(--orange)">⚡ A habilidade mais valiosa agora não é digitar código. É saber expressar lógica em linguagem natural com precisão.</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     5. REGRAS DO JOGO
 ══════════════════════════════════════ -->
 <section class="slide" data-notes="Isso é CRÍTICO para a credibilidade. Especialmente com o CTO na sala.">
   <h2>Regras do jogo</h2>
@@ -350,7 +377,36 @@
 </section>
 
 <!-- ══════════════════════════════════════
-     7. COMO A MAIORIA USA HOJE
+     7. AMNÉSIA DO LLM
+══════════════════════════════════════ -->
+<section class="slide" data-notes="Karpathy chamou de amnésia anterógrada. Estabelece por que RAG existe — não como feature, mas como solução para uma limitação estrutural.">
+  <h2>O problema estrutural dos LLMs</h2>
+  <div class="cols cols-2 mt">
+    <div>
+      <div class="card" style="margin-bottom:0.6em">
+        <p style="font-size:0.6em; color:var(--orange); font-weight:700; margin-bottom:0.3em">Amnésia anterógrada</p>
+        <p style="color:var(--muted)">Cada sessão começa do zero. Decisões de ontem, contexto de 6 meses atrás, padrões do time — tudo evaporado.</p>
+      </div>
+      <div class="card" style="margin-bottom:0.6em">
+        <p style="font-size:0.6em; color:var(--orange); font-weight:700; margin-bottom:0.3em">Janela de contexto finita</p>
+        <p style="color:var(--muted)">Você não consegue jogar 50 arquivos CLAUDE.md no prompt. A IA precisa receber o contexto certo, não todo o contexto.</p>
+      </div>
+      <div class="card">
+        <p style="font-size:0.6em; color:var(--orange); font-weight:700; margin-bottom:0.3em">Alucinações sob incerteza</p>
+        <p style="color:var(--muted)">Sem contexto real, a IA inventa. Não de má-fé — ela preenche lacunas com o que parece plausível.</p>
+      </div>
+    </div>
+    <div class="card card-green" style="display:flex; flex-direction:column; justify-content:center">
+      <p style="color:var(--green); font-weight:700; margin-bottom:0.8em">A solução não é um prompt maior.</p>
+      <p style="color:var(--muted)">É injetar <hl>contexto relevante sob demanda</hl> — só o que a IA precisa saber agora, buscado semanticamente no momento certo.</p>
+      <br>
+      <p style="color:var(--muted); font-size:0.8em">É isso que o RAG resolve.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     8. COMO A MAIORIA USA HOJE
 ══════════════════════════════════════ -->
 <section class="slide" data-notes="A maioria das pessoas usa a IA assim. É melhor que nada, mas ainda é keyword search.">
   <h2>Como a maioria usa hoje</h2>
@@ -597,7 +653,35 @@
 </section>
 
 <!-- ══════════════════════════════════════
-     18. ACT 4 — AGENTES
+     18. AUTONOMY SLIDER
+══════════════════════════════════════ -->
+<section class="slide" data-notes="Karpathy usa a analogia do Homem de Ferro. Antes de mostrar agentes, plante a pergunta: onde colocar o dial? Isso justifica os guardrails que acabaram de ver.">
+  <h2>O dial de autonomia</h2>
+  <div class="cols cols-2 mt">
+    <div>
+      <div class="card" style="margin-bottom:0.6em">
+        <p style="font-size:0.6em; color:var(--muted); font-family:'JetBrains Mono'; margin-bottom:0.3em">COPILOTO</p>
+        <p style="font-weight:700; margin-bottom:0.3em">Você dirige, IA assiste</p>
+        <p style="color:var(--muted)">Autocomplete, sugestões, review. Humano toma todas as decisões. Baixo risco, baixo ganho.</p>
+      </div>
+      <div style="text-align:center; color:var(--muted); margin:0.4em 0; font-size:0.7em">← dial de autonomia →</div>
+      <div class="card card-green">
+        <p style="font-size:0.6em; color:var(--green); font-family:'JetBrains Mono'; margin-bottom:0.3em">AGENTE</p>
+        <p style="font-weight:700; color:var(--green); margin-bottom:0.3em">IA age, você valida</p>
+        <p style="color:var(--muted)">IA planeja, executa passos, usa ferramentas. Humano define o objetivo e revisa o resultado.</p>
+      </div>
+    </div>
+    <div class="card card-purple" style="display:flex; flex-direction:column; justify-content:center">
+      <p style="color:#a78bfa; font-weight:700; margin-bottom:0.8em">A pergunta certa não é<br>"usar IA ou não?"</p>
+      <p style="color:var(--muted)">É: <hl>"onde colocar o dial"</hl> — e por quê.</p>
+      <br>
+      <p style="color:var(--muted); font-size:0.85em">Os hooks que você viu antes existem para isso: guardrails que definem o limite da autonomia sem precisar supervisionar cada passo.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     19. ACT 4 — AGENTES
 ══════════════════════════════════════ -->
 <section class="slide center" data-notes="Esse é o ato que impressiona o CTO. Um engenheiro com frota de agentes não é mais 1x. É 10x.">
   <div class="act-number">04 / 05</div>
